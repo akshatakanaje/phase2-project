@@ -2,7 +2,6 @@ package com.simplilearn.phaseproject.controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,33 +12,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import com.simplilearn.phaseproject.dao.BatchDAO;
+import com.simplilearn.phaseproject.dao.ParticipantDAO;
 import com.simplilearn.phaseproject.model.Response;
 import com.simplilearn.phaseproject.model.Batch;
+import com.simplilearn.phaseproject.model.Participant;
 
-
-@WebServlet("/batch")
-public class BatchCrudController extends HttpServlet{
+@WebServlet("/participant")
+public class ParticipantCrudController extends HttpServlet{
 	
-	BatchDAO batchDAO = new BatchDAO();
+	ParticipantDAO participantDAO = new ParticipantDAO();
 	Response responseDto = new Response();
 	
 	/**
-	 * Get All OR get One batch
+	 * Get All OR get One participant
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
 		String id = request.getParameter("id");
-		List<Batch> batchList = new ArrayList<Batch>();
+		List<Participant> participantList = new ArrayList<Participant>();
 		
 		if(id != null) {
-			Batch batch = batchDAO.getOne(Long.parseLong(id));
-			batchList.add(batch);
+			Participant participant = participantDAO.getOne(Long.parseLong(id));
+			participantList.add(participant);
 		} else {
-			batchList = batchDAO.getAll();
+			participantList = participantDAO.getAll();
 		}
-		String jsonResponse = new Gson().toJson(batchList);
+		String jsonResponse = new Gson().toJson(participantList);
 		PrintWriter out = response.getWriter();
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
@@ -49,25 +48,25 @@ public class BatchCrudController extends HttpServlet{
 	
 	
 	/**
-	 * Create a batch
+	 * Create a participant
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		try {
-			Batch batch = new Batch();
-			batch.setBatchName(request.getParameter("batchName"));
+			Participant participant = new Participant();
+			participant.setBatchId(Integer.parseInt(request.getParameter("batchId")));
+			participant.setUserName(request.getParameter("userName"));
+			participant.setPhoneNumber(request.getParameter("phoneNumber"));
+			participant.setEmail(request.getParameter("email"));
+			participant.setGender(request.getParameter("gender"));
 			
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			batch.setStartDate(format.parse(request.getParameter("startDate")));
-			batch.setEndDate(format.parse(request.getParameter("endDate")));
-			
-			batchDAO.save(batch);
+			participantDAO.save(participant);
 			responseDto.setStatus("Success");
-			responseDto.setMessage("Categrory is created successfully!");			
+			responseDto.setMessage("Participant is created successfully!");
 		} catch (Exception e) {
 			e.printStackTrace();
-			responseDto.setMessage("Failed create batch data");
+			responseDto.setMessage("Failed create participant data");
 			responseDto.setStatus("Failed");
 		}
 		String jsonResponse = new Gson().toJson(responseDto);
@@ -75,30 +74,31 @@ public class BatchCrudController extends HttpServlet{
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		out.print(jsonResponse);
-		out.flush();
-	}
+		out.flush();			
+} 
 	
 	
 	/**
-	 * Update a batch
+	 * Update a participant
 	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
 		try {
-			Batch batch = new Batch();
-			batch.setBatchName(request.getParameter("batchName"));
+			Participant participant = new Participant();
+			participant.setPartId(Integer.parseInt(request.getParameter("partId")));
+			participant.setBatchId(Integer.parseInt(request.getParameter("batchId")));
+			participant.setUserName(request.getParameter("userName"));
+			participant.setPhoneNumber(request.getParameter("phoneNumber"));
+			participant.setEmail(request.getParameter("email"));
+			participant.setGender(request.getParameter("gender"));
 			
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			batch.setStartDate(format.parse(request.getParameter("startDate")));
-			batch.setEndDate(format.parse(request.getParameter("endDate")));
-			
-			batchDAO.update(batch);
+			participantDAO.update(participant);
 			responseDto.setStatus("Success");
-			responseDto.setMessage("Batch is created successfully!");			
+			responseDto.setMessage("Participant is updated successfully!");
 		} catch (Exception e) {
 			e.printStackTrace();
-			responseDto.setMessage("Failed create batch data");
+			responseDto.setMessage("Failed update participant data");
 			responseDto.setStatus("Failed");
 		}
 		String jsonResponse = new Gson().toJson(responseDto);
@@ -106,12 +106,12 @@ public class BatchCrudController extends HttpServlet{
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		out.print(jsonResponse);
-		out.flush();
+		out.flush();		
 	}
 	
 	
 	/**
-	 * Delete a batch
+	 * Delete a participant
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -119,14 +119,14 @@ public class BatchCrudController extends HttpServlet{
 		String id = request.getParameter("id");
 
 		try {
-			int rowAffected = batchDAO.delete(Integer.parseInt(id));
+			int rowAffected = participantDAO.delete(Integer.parseInt(id));
 			if(rowAffected > 0) {
 				responseDto.setStatus("Success");
-				responseDto.setMessage("Batch is deleted successfully");
+				responseDto.setMessage("Participant is deleted successfully");
 			}			
 		}  catch (Exception e) {
 			responseDto.setStatus("Failed");
-			responseDto.setMessage("Failed deletion of a batch");
+			responseDto.setMessage("Failed deletion of a participant");
 		}
 		String jsonResponse = new Gson().toJson(responseDto);
 		PrintWriter out = response.getWriter();

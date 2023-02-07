@@ -104,7 +104,8 @@ public class BatchDAO implements DAO<Batch>{
 			String endDate = format.format(object.getEndDate());
 			
 			String sql = String.format(
-					"update batch set batchName='%s', where batchId=%d",
+					"update batch set batchId=%d, batchName='%s' where batchId=%d",
+					object.getBatchId(),
 					object.getBatchName(),
 					startDate,
 					endDate
