@@ -1,7 +1,5 @@
 package com.simplilearn.phaseproject.model;
 
-
-import java.sql.Time;
 import java.util.Date;
 
 public class Batch {
@@ -9,8 +7,6 @@ public class Batch {
 	// data properties of batch model
 	private int batchId;
 	private String batchName;
-	private Time startTime;
-	private Time endTime;
 	private Date startDate;
 	private Date endDate;
 	
@@ -22,12 +18,10 @@ public class Batch {
 
 	
 	// parameterized constructor
-	public Batch(int batchId, String batchName, Time startTime, Time endTime, Date startDate, Date endDate) {
+	public Batch(int batchId, String batchName, Date startDate, Date endDate) {
 		super();
 		this.batchId = batchId;
 		this.batchName = batchName;
-		this.startTime = startTime;
-		this.endTime = endTime;
 		this.startDate = startDate;
 		this.endDate = endDate;
 	}
@@ -50,21 +44,6 @@ public class Batch {
 		this.batchName = batchName;
 	}
 
-	public Time getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(Time startTime) {
-		this.startTime = startTime;
-	}
-
-	public Time getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(Time endTime) {
-		this.endTime = endTime;
-	}
 
 	public Date getStartDate() {
 		return startDate;
@@ -86,8 +65,7 @@ public class Batch {
 	// override to string
 	@Override
 	public String toString() {
-		return "Batch [batchId=" + batchId + ", batchName=" + batchName + ", startTime=" + startTime + ", endTime="
-				+ endTime + ", startDate=" + startDate + ", endDate=" + endDate + "]";
+		return "Batch [batchId=" + batchId + ", batchName=" + batchName + ", startDate=" + startDate + ", endDate=" + endDate + "]";
 	}
 
 }
